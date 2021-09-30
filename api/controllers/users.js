@@ -4,6 +4,10 @@ const User = require("../models/user");
 const userValidation = require("../validation/user");
 const { Op } = require("sequelize");
 
+const signToken = (id, username, expiresIn) => {
+  return jwt.sign({ id, username }, process.env.JWT_SECRET, { expiresIn });
+};
+
 const signup = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
@@ -28,11 +32,7 @@ const signup = async (req, res) => {
       username,
       password: hashedPassword,
     });
-    const token = jwt.sign(
-      { username: newUser.username, id: newUser.id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const token = signToken(newUser.id, newUser.username, "1h");
 
     res.status(200).json({ token });
   } catch (e) {
@@ -57,11 +57,7 @@ const signin = async (req, res) => {
       throw new Error("Check your credentials and try again");
     }
 
-    const token = jwt.sign(
-      { username: foundUser.username, id: foundUser.id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const token = signToken(foundUser.id, foundUser.username, "1h");
     res.status(200).json({ token });
   } catch (e) {
     res.status(400).json({ error: e.message });
