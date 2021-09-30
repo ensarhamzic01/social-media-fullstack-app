@@ -6,6 +6,10 @@ const checkAuth = require("../middleware/check-auth");
 
 Router.post("/signup", signup);
 Router.post("/signin", signin);
-Router.post("/verify", checkAuth);
+
+// Verify user token
+Router.post("/verify", checkAuth, (req, res) => {
+  res.status(200).json({ success: "User is verified" });
+});
 
 module.exports = Router;

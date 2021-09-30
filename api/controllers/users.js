@@ -4,6 +4,7 @@ const User = require("../models/user");
 const userValidation = require("../validation/user");
 const { Op } = require("sequelize");
 
+// creates jwt token
 const signToken = (id, username, expiresIn) => {
   return jwt.sign({ id, username }, process.env.JWT_SECRET, { expiresIn });
 };
@@ -11,6 +12,7 @@ const signToken = (id, username, expiresIn) => {
 const signup = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
+    // Joi validation
     const { error } = userValidation.validate({
       name,
       email,
@@ -19,6 +21,7 @@ const signup = async (req, res) => {
     });
     if (error) throw new Error(error);
 
+    // Check if email and username are unique
     const notUnique = await User.findOne({
       where: {
         [Op.or]: [{ email: email }, { username: username }],
@@ -44,6 +47,7 @@ const signin = async (req, res) => {
   try {
     let foundUser = null;
     const { emailOrUsername, password } = req.body;
+    // Find user
     if (emailOrUsername.includes("@")) {
       foundUser = await User.findOne({ where: { email: emailOrUsername } });
     } else {
@@ -52,6 +56,8 @@ const signin = async (req, res) => {
     if (!foundUser) {
       throw new Error("Check your credentials and try again");
     }
+
+    // Check if passwords match
     const match = await bcrypt.compare(password, foundUser.password);
     if (!match) {
       throw new Error("Check your credentials and try again");
