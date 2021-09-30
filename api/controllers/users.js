@@ -40,6 +40,35 @@ const signup = async (req, res) => {
   }
 };
 
+const signin = async (req, res) => {
+  try {
+    let foundUser = null;
+    const { emailOrUsername, password } = req.body;
+    if (emailOrUsername.includes("@")) {
+      foundUser = await User.findOne({ where: { email: emailOrUsername } });
+    } else {
+      foundUser = await User.findOne({ where: { username: emailOrUsername } });
+    }
+    if (!foundUser) {
+      throw new Error("Check your credentials and try again");
+    }
+    const match = await bcrypt.compare(password, foundUser.password);
+    if (!match) {
+      throw new Error("Check your credentials and try again");
+    }
+
+    const token = jwt.sign(
+      { username: foundUser.username, id: foundUser.id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({ token });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+};
+
 module.exports = {
   signup,
+  signin,
 };
