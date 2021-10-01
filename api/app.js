@@ -9,6 +9,7 @@ const Post = require("./models/post");
 const Follower = require("./models/follower");
 const usersRoutes = require("./routes/users");
 const followersRoutes = require("./routes/followers");
+const postsRoutes = require("./routes/posts");
 const checkAuth = require("./middleware/check-auth");
 
 // Middleware
@@ -19,6 +20,7 @@ app.use(express.json());
 // Routes
 app.use("/api/users", usersRoutes);
 app.use("/api/followers", checkAuth, followersRoutes);
+app.use("/api/posts", checkAuth, postsRoutes);
 
 // Table relations
 User.hasMany(Post);
@@ -32,7 +34,6 @@ Follower.belongsTo(User, { as: "follower" });
     await sequelize.sync();
     app.listen(PORT, () => {
       console.log(`LISTENING ON PORT ${PORT}`);
-      console.log(Object.keys(User.__proto__));
     });
   } catch (e) {
     console.log(e);
