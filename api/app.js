@@ -8,6 +8,8 @@ const User = require("./models/user");
 const Post = require("./models/post");
 const Follower = require("./models/follower");
 const usersRoutes = require("./routes/users");
+const followersRoutes = require("./routes/followers");
+const checkAuth = require("./middleware/check-auth");
 
 // Middleware
 app.use(cors());
@@ -16,9 +18,11 @@ app.use(express.json());
 
 // Routes
 app.use("/api/users", usersRoutes);
+app.use("/api/followers", checkAuth, followersRoutes);
 
 // Table relations
 User.hasMany(Post);
+Post.belongsTo(User);
 Follower.belongsTo(User, { as: "user" });
 Follower.belongsTo(User, { as: "follower" });
 
