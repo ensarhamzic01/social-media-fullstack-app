@@ -32,6 +32,7 @@ Follower.belongsTo(User, { as: "follower" });
     await sequelize.sync();
     app.listen(PORT, () => {
       console.log(`LISTENING ON PORT ${PORT}`);
+      console.log(Object.keys(User.__proto__));
     });
   } catch (e) {
     console.log(e);
