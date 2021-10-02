@@ -1,8 +1,10 @@
 const express = require("express");
 const Router = express.Router();
 
-const { create } = require("../controllers/posts");
+const { create, like, unlike } = require("../controllers/posts");
 
 Router.post("/", create);
+Router.post("/:postId/like", like);
+Router.delete("/:postId/like", unlike);
 
 module.exports = Router;

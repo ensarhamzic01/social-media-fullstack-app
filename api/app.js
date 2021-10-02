@@ -36,7 +36,6 @@ Follower.belongsTo(User, { as: "follower" });
 User.hasMany(Like);
 Post.hasMany(Like);
 
-// Starting the server
 (async () => {
   try {
     // await sequelize.sync({ force: true });
