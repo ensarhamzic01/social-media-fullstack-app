@@ -4,12 +4,19 @@ const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 require("dotenv").config();
 const sequelize = require("./utils/mysql-connection");
+
+// Models import
 const User = require("./models/user");
 const Post = require("./models/post");
 const Follower = require("./models/follower");
+const Like = require("./models/like");
+
+// Routes import
 const usersRoutes = require("./routes/users");
 const followersRoutes = require("./routes/followers");
 const postsRoutes = require("./routes/posts");
+
+// Middleware import
 const checkAuth = require("./middleware/check-auth");
 
 // Middleware
@@ -24,16 +31,18 @@ app.use("/api/posts", checkAuth, postsRoutes);
 
 // Table relations
 User.hasMany(Post);
-Post.belongsTo(User);
 Follower.belongsTo(User, { as: "user" });
 Follower.belongsTo(User, { as: "follower" });
+User.hasMany(Like);
+Post.hasMany(Like);
 
+// Starting the server
 (async () => {
   try {
     // await sequelize.sync({ force: true });
     await sequelize.sync();
     app.listen(PORT, () => {
-      console.log(`LISTENING ON PORT ${PORT}`);
+      console.log(`SERVER STARTED ON PORT ${PORT}`);
     });
   } catch (e) {
     console.log(e);
