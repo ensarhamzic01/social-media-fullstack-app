@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const Like = require("../models/like");
+const Comment = require("../models/comment");
 const { Op } = require("sequelize");
 const postValidation = require("../validation/post");
 
@@ -51,9 +52,36 @@ const unlike = async (req, res) => {
   }
 };
 
-const addComment = async (req, res) => {};
+const addComment = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const postId = req.params.postId;
+    const { text } = req.body;
+    await Comment.create({
+      text,
+      userId,
+      postId,
+    });
+    res.status(200).json({ success: "Added comment!" });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+};
 
-const deleteComment = async (req, res) => {};
+const deleteComment = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { postId, commentId } = req.params;
+    await Comment.destroy({
+      where: {
+        id: commentId,
+      },
+    });
+    res.status(200).json({ success: "Deleted comment!" });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+};
 
 module.exports = {
   create,

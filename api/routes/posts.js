@@ -13,6 +13,6 @@ Router.post("/", create);
 Router.post("/:postId/like", like);
 Router.delete("/:postId/like", unlike);
 Router.post("/:postId/comment", addComment);
-Router.delete("/:postId/comment", deleteComment);
+Router.delete("/:postId/comment/:commentId", deleteComment);
 
 module.exports = Router;
