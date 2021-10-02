@@ -31,13 +31,19 @@ app.use("/api/followers", checkAuth, followersRoutes);
 app.use("/api/posts", checkAuth, postsRoutes);
 
 // Table relations
-User.hasMany(Post);
+User.hasMany(Post, { onDelete: "cascade", foreignKey: { allowNull: false } });
 Follower.belongsTo(User, { as: "user" });
 Follower.belongsTo(User, { as: "follower" });
-User.hasMany(Like);
-Post.hasMany(Like);
-User.hasMany(Comment);
-Post.hasMany(Comment);
+User.hasMany(Like, { onDelete: "cascade", foreignKey: { allowNull: false } });
+Post.hasMany(Like, { onDelete: "cascade", foreignKey: { allowNull: false } });
+User.hasMany(Comment, {
+  onDelete: "cascade",
+  foreignKey: { allowNull: false },
+});
+Post.hasMany(Comment, {
+  onDelete: "cascade",
+  foreignKey: { allowNull: false },
+});
 
 (async () => {
   try {

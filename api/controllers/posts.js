@@ -4,7 +4,7 @@ const Comment = require("../models/comment");
 const { Op } = require("sequelize");
 const postValidation = require("../validation/post");
 
-const create = async (req, res) => {
+const createPost = async (req, res) => {
   try {
     const { user } = req;
     const { text } = req.body;
@@ -18,6 +18,21 @@ const create = async (req, res) => {
       text,
     });
     res.status(200).json({ success: "Post successfully created" });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+};
+
+const deletePost = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const postId = req.params.postId;
+    const post = await Post.findByPk(postId);
+    if (post.userId !== userId) {
+      throw new Error("Post is not yours");
+    }
+    await post.destroy();
+    res.status(200).json({ success: "Post deleted" });
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
@@ -84,7 +99,8 @@ const deleteComment = async (req, res) => {
 };
 
 module.exports = {
-  create,
+  createPost,
+  deletePost,
   like,
   unlike,
   addComment,
