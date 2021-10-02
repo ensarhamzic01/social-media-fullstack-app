@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const Like = require("../models/like");
+const { Op } = require("sequelize");
 const postValidation = require("../validation/post");
 
 const create = async (req, res) => {
@@ -35,7 +36,20 @@ const like = async (req, res) => {
   }
 };
 
-const unlike = async (req, res) => {};
+const unlike = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const postId = req.params.postId;
+    await Like.destroy({
+      where: {
+        [Op.and]: [{ userId }, { postId }],
+      },
+    });
+    res.status(200).json({ success: "Unliked!" });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+};
 
 module.exports = {
   create,
