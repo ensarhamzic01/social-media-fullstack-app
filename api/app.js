@@ -10,6 +10,7 @@ const User = require("./models/user");
 const Post = require("./models/post");
 const Follower = require("./models/follower");
 const Like = require("./models/like");
+const Comment = require("./models/comment");
 
 // Routes import
 const usersRoutes = require("./routes/users");
@@ -35,6 +36,8 @@ Follower.belongsTo(User, { as: "user" });
 Follower.belongsTo(User, { as: "follower" });
 User.hasMany(Like);
 Post.hasMany(Like);
+User.hasMany(Comment);
+Post.hasMany(Comment);
 
 (async () => {
   try {

@@ -51,8 +51,14 @@ const unlike = async (req, res) => {
   }
 };
 
+const addComment = async (req, res) => {};
+
+const deleteComment = async (req, res) => {};
+
 module.exports = {
   create,
   like,
   unlike,
+  addComment,
+  deleteComment,
 };
