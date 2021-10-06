@@ -47,8 +47,8 @@ Post.hasMany(Comment, {
 
 (async () => {
   try {
-    await sequelize.sync({ force: true });
-    // await sequelize.sync();
+    // await sequelize.sync({ force: true });
+    await sequelize.sync();
     app.listen(PORT, () => {
       console.log(`SERVER STARTED ON PORT ${PORT}`);
     });

@@ -70,7 +70,18 @@ const signin = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    await User.destroy({ where: { id: userId } });
+    res.status(200).json({ success: "Deleted user!" });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+};
+
 module.exports = {
   signup,
   signin,
+  deleteUser,
 };
