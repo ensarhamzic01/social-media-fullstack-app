@@ -87,11 +87,11 @@ const deleteComment = async (req, res) => {
   try {
     const userId = req.user.id;
     const { postId, commentId } = req.params;
-    await Comment.destroy({
-      where: {
-        id: commentId,
-      },
-    });
+    const comment = await Comment.findByPk(commentId);
+    if (comment.id !== commentId) {
+      throw new Error("Comment is not yours");
+    }
+    await comment.destroy();
     res.status(200).json({ success: "Deleted comment!" });
   } catch (e) {
     res.status(400).json({ error: e.message });
