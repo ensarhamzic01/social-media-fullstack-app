@@ -1,0 +1,16 @@
+.register__card {
+  width: 60%;
+  margin: 50px auto;
+}
+
+.register__title {
+  color: #264653;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.register__card button {
+  display: block;
+  width: 50%;
+  margin: auto;
+}
