@@ -1,0 +1,30 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  background-color: #264653;
+  color: white;
+}
+
+.navbar__items a {
+  margin-right: 15px;
+}
+
+.navbar__items a:link,
+.navbar__items a:visited {
+  margin-right: 25px;
+  color: inherit;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.navbar__items a:hover {
+  color: #f4a261;
+}
+
+.navbar__items a:active {
+  color: #e76f51;
+}
